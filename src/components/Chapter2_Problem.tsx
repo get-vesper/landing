@@ -13,9 +13,9 @@ function FragmentationAnimation() {
       let delay = 1000;
       if (currentStep === 0) delay = 1000; // Legal requests
       if (currentStep === 1) delay = 1000; // Moving to Eng
-      if (currentStep === 2) delay = 800; // Ops waiting / Eng processing
+      if (currentStep === 2) delay = 1200; // Ops waiting / Eng processing
       if (currentStep === 3) delay = 1000; // Moving to Legal
-      if (currentStep === 4) delay = 2000; // Attached, waiting to reset
+      if (currentStep === 4) delay = 4000; // Attached, long pause to see final state before reset
       
       timeoutId = setTimeout(() => {
         setStep((prev) => (prev >= 4 ? 0 : prev + 1));
@@ -28,7 +28,6 @@ function FragmentationAnimation() {
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center p-6 relative">
-      {/* Container */}
       <div className="w-full max-w-[280px] h-[280px] relative">
         
         {/* Connection Lines */}
@@ -73,7 +72,7 @@ function FragmentationAnimation() {
           <div className="text-[10px] font-mono text-gray-400 mb-1">Mission Operations</div>
           <div className={`text-xs font-medium transition-colors ${step === 2 || step === 3 ? 'text-orange-600' : step >= 4 ? 'text-green-600' : 'text-gray-800'}`}>
             {step === 0 || step === 1 ? "Awaiting filing..." : 
-             step === 2 || step === 3 ? "Waiting on Engineering..." : 
+             step === 2 || step === 3 ? "Blocked: Waiting on Engineering" : 
              "Ready"}
           </div>
         </motion.div>
@@ -133,7 +132,7 @@ function OverheadAnimation() {
   const [overhead, setOverhead] = useState(384);
   const [tasks, setTasks] = useState<{id: number, text: string}[]>([]);
   const [taskIdCounter, setTaskIdCounter] = useState(0);
-  const [resetting, setResetting] = useState(false);
+  const [phase, setPhase] = useState(0); // 0 = running, 1 = paused (showing > max), 2 = resetting
 
   const TASK_LIST = [
     "Need to check FCC filing",
@@ -145,22 +144,25 @@ function OverheadAnimation() {
   ];
 
   useEffect(() => {
-    if (resetting) return;
+    if (phase !== 0) return;
     
     const interval = setInterval(() => {
       setTaskIdCounter(p => {
         const nextId = p + 1;
         
-        // When we reach max tasks, trigger a smooth reset
+        // When we reach max tasks, pause and show ">" values
         if (nextId > TASK_LIST.length) {
-          setResetting(true);
+          setPhase(1);
           setTimeout(() => {
-            setTasks([]);
-            setTaskIdCounter(0);
-            setDevTime(127);
-            setOverhead(384);
-            setResetting(false);
-          }, 600); // Wait for exit animation
+            setPhase(2);
+            setTimeout(() => {
+              setTasks([]);
+              setTaskIdCounter(0);
+              setDevTime(127);
+              setOverhead(384);
+              setPhase(0);
+            }, 600); // Wait for exit animation
+          }, 3500); // Hold final state for 3.5s
           return p;
         }
 
@@ -168,31 +170,32 @@ function OverheadAnimation() {
         setOverhead(prev => prev + 12);
 
         setTasks(current => {
-          const newTasks = [...current, { id: nextId, text: TASK_LIST[(nextId - 1) % TASK_LIST.length] }];
+          // Add to top, max 4 items visible
+          const newTasks = [{ id: nextId, text: TASK_LIST[(nextId - 1) % TASK_LIST.length] }, ...current].slice(0, 4);
           return newTasks;
         });
         
         return nextId;
       });
-    }, 900);
+    }, 1100); // Slightly slower task generation
     return () => clearInterval(interval);
-  }, [resetting]);
+  }, [phase]);
 
   return (
     <div className="w-full h-full flex items-center justify-center p-6">
-      <div className="w-full max-w-[320px] flex gap-4 h-[240px]">
+      <div className="w-full max-w-[320px] flex gap-4 h-[200px]">
         {/* Task List */}
         <div className="flex-1 flex flex-col gap-2 overflow-hidden relative border-r border-gray-200/50 pr-4">
-          <div className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-2">Compliance Tasks</div>
-          <div className="flex flex-col gap-2">
+          <div className="text-[10px] font-mono text-gray-400 uppercase tracking-wider mb-2 flex-shrink-0">Compliance Tasks</div>
+          <div className="flex flex-col gap-2 relative">
             <AnimatePresence>
-              {tasks.map(task => (
+              {phase < 2 && tasks.map((task) => (
                 <motion.div 
                   key={task.id}
-                  initial={{ opacity: 0, x: -10, height: 0, marginBottom: 0 }}
-                  animate={{ opacity: 1, x: 0, height: 'auto', marginBottom: 8 }}
-                  exit={{ opacity: 0, x: 10, height: 0, marginBottom: 0 }}
-                  transition={{ duration: 0.3 }}
+                  initial={{ opacity: 0, y: -10, height: 0, marginBottom: 0 }}
+                  animate={{ opacity: 1, y: 0, height: 'auto', marginBottom: 8 }}
+                  exit={{ opacity: 0, x: -10, height: 0, marginBottom: 0 }}
+                  transition={{ duration: 0.4 }}
                   className="text-xs p-2 rounded border bg-orange-50 border-orange-200 text-orange-800 flex items-center justify-between shadow-sm overflow-hidden"
                 >
                   <span className="truncate pr-2">{task.text}</span>
@@ -207,11 +210,15 @@ function OverheadAnimation() {
         <div className="w-32 flex flex-col gap-6 pt-6">
           <motion.div layout>
             <div className="text-[10px] text-gray-500 mb-1">Mission Dev Time</div>
-            <div className="text-xl font-display text-gray-900">{devTime} <span className="text-xs text-gray-400">Days</span></div>
+            <div className="text-xl font-display text-gray-900">
+              {phase >= 1 ? `>180` : devTime} <span className="text-xs text-gray-400">Days</span>
+            </div>
           </motion.div>
           <motion.div layout>
-            <div className="text-[10px] text-orange-600 font-medium mb-1 transition-colors">Compliance Overhead</div>
-            <div className="text-xl font-display text-orange-600 transition-colors">{overhead} <span className="text-xs text-gray-400">Hours</span></div>
+            <div className={`text-[10px] font-medium mb-1 transition-colors ${phase >= 1 ? 'text-red-600' : 'text-orange-600'}`}>Compliance Overhead</div>
+            <div className={`text-xl font-display transition-colors ${phase >= 1 ? 'text-red-600' : 'text-orange-600'}`}>
+              {phase >= 1 ? `>450` : overhead} <span className="text-xs text-gray-400">Hours</span>
+            </div>
           </motion.div>
         </div>
       </div>
@@ -222,7 +229,7 @@ function OverheadAnimation() {
 // --- Card 3: Cost Risk ---
 function CostRiskAnimation() {
   const [phase, setPhase] = useState(0); 
-  // 0: Healthy, 1: Missing diagram, 2: Delayed and costs rise, 3: Resetting
+  // 0: Healthy, 1: Missing diagram, 2: Delayed and costs rise, 3: Final state, 4: Resetting
   const [cost, setCost] = useState(84000);
 
   useEffect(() => {
@@ -234,9 +241,11 @@ function CostRiskAnimation() {
     } else if (phase === 1) {
       timer = setTimeout(() => setPhase(2), 1500); // Slide to right and cost goes up
     } else if (phase === 2) {
-      costInterval = setInterval(() => setCost(c => c + 3500), 100); // Cost increases fast
-      timer = setTimeout(() => setPhase(3), 2000); // Start reset
+      costInterval = setInterval(() => setCost(c => c + 3500), 120); // Cost increases fast
+      timer = setTimeout(() => setPhase(3), 2000); // End cost tick, enter final state
     } else if (phase === 3) {
+      timer = setTimeout(() => setPhase(4), 3500); // Hold final state before resetting
+    } else if (phase === 4) {
       timer = setTimeout(() => {
         setCost(84000);
         setPhase(0);
@@ -248,7 +257,7 @@ function CostRiskAnimation() {
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center p-6 relative">
-      <div className="w-full max-w-[320px] flex flex-col gap-8">
+      <div className="w-full max-w-[300px] flex flex-col gap-8">
         
         {/* Top Display */}
         <div className="flex justify-between items-start h-12">
@@ -261,7 +270,7 @@ function CostRiskAnimation() {
         {/* Timeline */}
         <div className="relative h-20">
           <div className="absolute top-1/2 left-0 right-0 h-px bg-gray-200 -translate-y-1/2" />
-          <div className="absolute top-1/2 left-0 w-full flex justify-between -translate-y-1/2 px-2">
+          <div className="absolute top-1/2 left-0 w-full flex justify-between -translate-y-1/2 px-4">
             
             {/* Eng */}
             <div className="flex flex-col items-center gap-2 relative">
@@ -269,19 +278,13 @@ function CostRiskAnimation() {
               <span className="text-[9px] text-gray-400 absolute top-4">Eng</span>
             </div>
             
-            {/* Comp */}
-            <div className="flex flex-col items-center gap-2 relative">
-              <div className="w-3 h-3 rounded-full bg-gray-300 border-2 border-white z-10" />
-              <span className="text-[9px] text-gray-400 absolute top-4">Review</span>
-            </div>
-            
             {/* Reg */}
             <div className="flex flex-col items-center gap-2 relative">
-              <div className={`w-3 h-3 rounded-full border-2 border-white z-10 transition-colors duration-300 ${phase > 0 && phase < 3 ? 'bg-red-500' : 'bg-gray-800'}`} />
+              <div className={`w-3 h-3 rounded-full border-2 border-white z-10 transition-colors duration-300 ${phase > 0 && phase < 4 ? 'bg-red-500' : 'bg-gray-800'}`} />
               <span className="text-[9px] text-gray-800 font-medium absolute top-4">Submit</span>
               
               <AnimatePresence>
-                {(phase === 1 || phase === 2) && (
+                {(phase === 1 || phase === 2 || phase === 3) && (
                   <motion.div 
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -298,13 +301,13 @@ function CostRiskAnimation() {
             {/* Launch */}
             <motion.div 
               className="flex flex-col items-center gap-2 relative"
-              animate={phase === 2 ? { x: 35 } : { x: 0 }}
+              animate={(phase === 2 || phase === 3) ? { x: 45 } : { x: 0 }}
               transition={{ type: "spring", stiffness: 120, damping: 15 }}
             >
-              <div className={`w-3 h-3 rounded-full border-2 border-white z-10 transition-colors duration-300 ${phase === 2 ? 'bg-orange-400' : 'bg-gray-300'}`} />
+              <div className={`w-3 h-3 rounded-full border-2 border-white z-10 transition-colors duration-300 ${(phase === 2 || phase === 3) ? 'bg-orange-400' : 'bg-gray-300'}`} />
               <span className="text-[9px] text-gray-500 absolute top-4">Launch</span>
               <AnimatePresence>
-                {phase === 2 && (
+                {(phase === 2 || phase === 3) && (
                   <motion.div 
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -326,20 +329,20 @@ function CostRiskAnimation() {
             <div className="text-[10px] text-gray-500 mb-1">Mission Risk</div>
             <AnimatePresence mode="wait">
               <motion.div 
-                key={phase === 2 ? 'elevated' : 'nominal'}
+                key={(phase === 2 || phase === 3) ? 'elevated' : 'nominal'}
                 initial={{ opacity: 0, y: 5 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -5 }}
-                className={`text-xs font-medium px-2 py-0.5 rounded-sm inline-flex ${phase === 2 ? 'bg-orange-100 text-orange-700' : 'bg-green-100 text-green-700'}`}
+                className={`text-xs font-medium px-2 py-0.5 rounded-sm inline-flex ${(phase === 2 || phase === 3) ? 'bg-orange-100 text-orange-700' : 'bg-green-100 text-green-700'}`}
               >
-                {phase === 2 ? 'Elevated' : 'Nominal'}
+                {(phase === 2 || phase === 3) ? 'Elevated' : 'Nominal'}
               </motion.div>
             </AnimatePresence>
           </div>
           <div className="text-right">
             <div className="text-[10px] text-gray-500 mb-1">Legal Costs</div>
-            <div className={`text-lg font-mono transition-colors duration-300 ${phase === 2 ? 'text-red-600 font-medium' : 'text-gray-800'}`}>
-              ${cost.toLocaleString()}
+            <div className={`text-lg font-mono transition-colors duration-300 ${(phase === 2 || phase === 3) ? 'text-red-600 font-medium' : 'text-gray-800'}`}>
+              {phase >= 3 ? `>$140,000` : `$${cost.toLocaleString()}`}
             </div>
           </div>
         </div>
@@ -350,60 +353,134 @@ function CostRiskAnimation() {
 }
 
 export default function Chapter2_Problem() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [progressKey, setProgressKey] = useState(0);
+
+  const CYCLE_DURATION = 12000;
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % 3);
+      setProgressKey(prev => prev + 1);
+    }, CYCLE_DURATION);
+    return () => clearInterval(timer);
+  }, [activeIndex]);
+
+  const PROBLEMS = [
+    {
+      title: "Mission information is fragmented.",
+      description: "Engineering builds the mission. Legal manages the filings. Because these teams exist in separate systems, critical information is lost in translation, creating massive operational risk.",
+      bgColor: "#EEF2F6",
+      animation: <FragmentationAnimation />
+    },
+    {
+      title: "Manual compliance creates operational overhead.",
+      description: "Relying on manual spreadsheets and disconnected PDFs means tedious data entry. This busywork adds unnecessary mission overhead and drastically delays planning.",
+      bgColor: "#F3F5F2",
+      animation: <OverheadAnimation />
+    },
+    {
+      title: "One missed deadline delays everything.",
+      description: "Managing regulatory chaos forces companies to rely on expensive space lawyers, consultants, and massive internal compliance teams just to keep up.",
+      bgColor: "#F8F6F0",
+      animation: <CostRiskAnimation />
+    }
+  ];
+
   return (
-    <section className="py-32 md:py-48 relative bg-vesper-base border-t border-vesper-border/50">
-      <div className="max-w-7xl mx-auto px-8 w-full">
+    <section className="py-20 md:py-24 relative bg-vesper-base border-t border-vesper-border/50">
+      <div className="max-w-7xl mx-auto px-8 w-full flex flex-col lg:flex-row gap-16 lg:items-center">
         
-        {/* Section Header */}
-        <div className="mb-8 md:mb-12 max-w-4xl">
-          <div className="text-xs font-mono tracking-widest text-vesper-text-muted uppercase mb-8">
-            01 / The Problem
+        {/* LEFT: Dynamic Animation Container */}
+        <div className="w-full lg:w-1/2">
+          <div 
+            className="w-full aspect-square md:aspect-[4/3] lg:aspect-square rounded-sm overflow-hidden relative border border-black/5 transition-colors duration-500"
+            style={{ backgroundColor: PROBLEMS[activeIndex].bgColor }}
+          >
+            <AnimatePresence mode="wait">
+              <motion.div 
+                key={activeIndex}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 1.05 }}
+                transition={{ duration: 0.4 }}
+                className="absolute inset-0 w-full h-full flex items-center justify-center"
+              >
+                {PROBLEMS[activeIndex].animation}
+              </motion.div>
+            </AnimatePresence>
           </div>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-medium text-vesper-text tracking-tight leading-[1.1]">
-            Traditional aerospace compliance is broken.
-          </h2>
         </div>
 
-        {/* 3-Column Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          
-          {/* Card 1: The Disconnect */}
-          <div className="flex flex-col gap-6 group">
-            <div className="h-[380px] md:h-[440px] rounded-sm bg-[#EEF2F6] overflow-hidden relative flex items-center justify-center border border-black/5">
-              <FragmentationAnimation />
+        {/* RIGHT: Text & Accordion */}
+        <div className="w-full lg:w-1/2 flex flex-col">
+          <div className="mb-12">
+            <div className="text-xs font-mono tracking-widest text-vesper-text-muted uppercase mb-4 md:mb-6">
+              01 / The Problem
             </div>
-            <div className="pr-8">
-              <h3 className="text-lg font-display font-medium text-vesper-text mb-2">Mission information is fragmented.</h3>
-              <p className="text-sm text-vesper-text-muted font-normal leading-relaxed">
-                Engineering builds the mission. Legal manages the filings. Because these teams exist in separate systems, critical information is lost in translation, creating massive operational risk.
-              </p>
-            </div>
+            <h2 className="text-4xl md:text-5xl font-display font-medium text-vesper-text tracking-tight leading-[1.1]">
+              Traditional aerospace compliance is broken.
+            </h2>
           </div>
 
-          {/* Card 2: The Overhead */}
-          <div className="flex flex-col gap-6 group">
-            <div className="h-[380px] md:h-[440px] rounded-sm bg-[#F3F5F2] overflow-hidden relative flex items-center justify-center border border-black/5">
-              <OverheadAnimation />
-            </div>
-            <div className="pr-8">
-              <h3 className="text-lg font-display font-medium text-vesper-text mb-2">Manual compliance creates operational overhead.</h3>
-              <p className="text-sm text-vesper-text-muted font-normal leading-relaxed">
-                Relying on manual spreadsheets and disconnected PDFs means tedious data entry. This busywork adds unnecessary mission overhead and drastically delays planning.
-              </p>
-            </div>
-          </div>
+          <div className="flex flex-col border-t border-gray-200/50">
+            {PROBLEMS.map((problem, idx) => {
+              const isActive = activeIndex === idx;
+              return (
+                <div 
+                  key={idx}
+                  className="border-b border-gray-200/50 cursor-pointer group"
+                  onClick={() => {
+                    if (!isActive) {
+                      setActiveIndex(idx);
+                      setProgressKey(p => p + 1);
+                    }
+                  }}
+                >
+                  <div className="py-6 flex items-center justify-between">
+                    <h3 className={`text-lg font-display transition-colors duration-300 ${isActive ? 'text-vesper-text font-medium' : 'text-gray-400 group-hover:text-gray-600'}`}>
+                      {problem.title}
+                    </h3>
+                    <div className="text-gray-400">
+                      {isActive ? (
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      ) : (
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 4v16m8-8H4" />
+                        </svg>
+                      )}
+                    </div>
+                  </div>
 
-          {/* Card 3: The Cost */}
-          <div className="flex flex-col gap-6 group">
-            <div className="h-[380px] md:h-[440px] rounded-sm bg-[#F8F6F0] overflow-hidden relative flex items-center justify-center border border-black/5">
-              <CostRiskAnimation />
-            </div>
-            <div className="pr-8">
-              <h3 className="text-lg font-display font-medium text-vesper-text mb-2">One missed deadline delays everything.</h3>
-              <p className="text-sm text-vesper-text-muted font-normal leading-relaxed">
-                Managing regulatory chaos forces companies to rely on expensive space lawyers, consultants, and massive internal compliance teams just to keep up.
-              </p>
-            </div>
+                  <AnimatePresence>
+                    {isActive && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="h-[2px] w-full bg-gray-100 mb-6 relative overflow-hidden">
+                          <motion.div 
+                            key={progressKey}
+                            initial={{ width: "0%" }}
+                            animate={{ width: "100%" }}
+                            transition={{ duration: 12, ease: "linear" }}
+                            className="absolute top-0 left-0 h-full bg-vesper-text"
+                          />
+                        </div>
+                        <p className="pb-8 text-sm text-vesper-text-muted leading-relaxed pr-8">
+                          {problem.description}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
           </div>
 
         </div>

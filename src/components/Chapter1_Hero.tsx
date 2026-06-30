@@ -32,7 +32,7 @@ export default function Chapter1_Hero() {
 
             <div className="flex flex-col sm:flex-row items-center gap-4">
               <button className="px-8 py-3.5 bg-vesper-text text-vesper-surface text-sm font-medium hover:bg-black transition-colors w-full sm:w-auto">
-                Request Access
+                Book a Demo
               </button>
               <button className="px-8 py-3.5 bg-transparent text-vesper-text text-sm font-medium border border-vesper-border hover:bg-black/5 transition-colors w-full sm:w-auto">
                 Explore Platform

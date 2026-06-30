@@ -18,7 +18,7 @@ export default function Chapter8_Closing() {
         
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <button className="px-8 py-4 bg-vesper-text text-vesper-surface text-sm font-medium hover:bg-black transition-colors w-full sm:w-auto">
-            Request Access
+            Book a Demo
           </button>
           <button className="px-8 py-4 bg-transparent text-vesper-text text-sm font-medium border border-vesper-border hover:bg-black/5 transition-colors w-full sm:w-auto">
             Contact Sales

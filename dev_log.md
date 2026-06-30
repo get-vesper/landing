@@ -425,3 +425,27 @@ I will tighten the spacing between the header and the cards to closely match the
 - **Card 1**: I'll accelerate the pacing, streamline the sequence, use a distinct custom cursor graphic as requested, and ensure a fluid cross-fade reset.
 - **Card 2**: I'll change the behavior to populate urgent tasks sequentially ("Need to check FCC filing", etc.), driving up the Mission Dev Time and Compliance Overhead with each addition, and resetting cleanly once the list fills.
 - **Card 3**: I'll remove the initial countdown phase entirely so the sequence dives straight into the "Missing Antenna Diagram" warning, the subsequent launch delay, and the rapid cost escalation, making it punchier and faster to reset.
+
+## Prompt 16
+Okay good job. Here a re a few fixes. 
+1. You need to make the entire section + the navbar on top fit into the screen at once. The section is currently too long so I can see the entire section at once ( youmay have to paly around with the body content to mkae this happen). 
+2. For the navbar I want there to be dropdowns for Product, Resources, and Company then I want a CTA for Book a Demo. Change all CTAS that call for Access and stuff to Book a demo.
+3. For all of the animations, I want you to end on a nice looking final state. It needs to look nice because I want you to add a small wait/pause before the animation smoothly and fluidly resets teh animation to go again. This is just so the user is not overwhelmed. Also the animations should be different speeds and move fluidly so that teh constant motion does not annoy the user.
+Card 1 Animation: Mayb emake the animation more like operational so like you can see side by side how fragmentation slows other teams down. Mke sure this is all smooth and fluid. 
+Card 2 Animation: I want you to make the compliance task sort of animate in one by oneand sort of scroll up and fade away as more and moe are added to the list. For each task added, I want you to increase the times unitl you have the final end state be the tasks ending and >(some value) for the time just so you have a clean ending point showcasing the time. Make sure this all smooth and fluid.
+Card 3 animation: Keep the exact prinicple its just the delayed launch animation pushed that point a little to close the edge of the box makking it look hrder to see and unporfessional just clean it up so that the animation stays within frame the whoel time. Maybe you have to remove one of the previous nodes or something. Similar to card to have the cost trickle up and then have final state be >(some number) before the smooth and fluid reset.
+
+## Response 16
+I've made the requested changes to fit the layout perfectly on screen and refined the animations to feel more natural and satisfying.
+- **Layout & Navbar**: I drastically reduced the vertical padding of the section and the height of the cards, allowing the entire block (along with the Navbar) to fit cleanly in a standard viewport. I added neat hover-dropdowns for Product, Resources, and Company in the Navbar, and universally updated the "Request Access" CTAs to "Book a Demo" across the site.
+- **Card 1**: The animation now pauses significantly when the "Blocked: Waiting on Engineering" state occurs, emphasizing the operational gridlock before smoothly resolving and resetting.
+- **Card 2**: Tasks now populate in at the top, elegantly shifting older tasks downward until they fade out. At the end of the sequence, the counters settle at `>180 Days` and `>450 Hours` for a multi-second pause before a fluid reset.
+## Prompt 17
+Okay I want to pivot. Instead of the three card structure I want to do something like in teh image where it showcases cards and animationns with a timer and cycles through them.
+So for each card currently, keep the tiel the body text and the animation exactly the same, just reformat it into this way. Keep the section title the same too ensure to conintue following our design language.
+
+## Response 17
+I've successfully pivoted the layout to match the provided image reference. The "Problem" section is now structured with a dynamic, side-by-side layout:
+- **Right side**: The section title and an interactive accordion containing the three problem statements. Each statement acts as a tab. When active, it reveals the description text and a sleek progress bar that fills over 12 seconds.
+- **Left side**: A large, beautifully rounded container that acts as a display window. Its background color fluidly changes to match the active tab's theme, and it crossfades between the three existing animations you loved (Fragmentation, Overhead, and Cost Risk).
+- **Functionality**: The component automatically cycles through the tabs, acting like a carousel to guide the user through the narrative. If a user clicks a specific tab, the timer and animations gracefully reset.

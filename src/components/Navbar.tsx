@@ -30,11 +30,51 @@ export default function Navbar() {
         </Link>
         
         <div className="flex items-center gap-8">
-          <Link href="#" className="hidden md:block text-sm font-medium text-vesper-text-muted hover:text-vesper-text transition-colors">Platform</Link>
-          <Link href="#" className="hidden md:block text-sm font-medium text-vesper-text-muted hover:text-vesper-text transition-colors">Customers</Link>
-          <Link href="#" className="hidden md:block text-sm font-medium text-vesper-text-muted hover:text-vesper-text transition-colors">Company</Link>
+          
+          <div className="relative group hidden md:block">
+            <button className="text-sm font-medium text-vesper-text-muted group-hover:text-vesper-text transition-colors flex items-center gap-1">
+              Product
+              <svg className="w-3 h-3 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+            </button>
+            <div className="absolute top-full left-0 pt-4 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200">
+              <div className="w-48 bg-white border border-gray-100 shadow-sm rounded flex flex-col p-2">
+                <Link href="#" className="text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 px-3 py-2 rounded">Overview</Link>
+                <Link href="#" className="text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 px-3 py-2 rounded">Features</Link>
+                <Link href="#" className="text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 px-3 py-2 rounded">Integrations</Link>
+              </div>
+            </div>
+          </div>
+
+          <div className="relative group hidden md:block">
+            <button className="text-sm font-medium text-vesper-text-muted group-hover:text-vesper-text transition-colors flex items-center gap-1">
+              Resources
+              <svg className="w-3 h-3 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+            </button>
+            <div className="absolute top-full left-0 pt-4 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200">
+              <div className="w-48 bg-white border border-gray-100 shadow-sm rounded flex flex-col p-2">
+                <Link href="#" className="text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 px-3 py-2 rounded">Documentation</Link>
+                <Link href="#" className="text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 px-3 py-2 rounded">Case Studies</Link>
+                <Link href="#" className="text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 px-3 py-2 rounded">Blog</Link>
+              </div>
+            </div>
+          </div>
+
+          <div className="relative group hidden md:block">
+            <button className="text-sm font-medium text-vesper-text-muted group-hover:text-vesper-text transition-colors flex items-center gap-1">
+              Company
+              <svg className="w-3 h-3 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+            </button>
+            <div className="absolute top-full left-0 pt-4 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200">
+              <div className="w-48 bg-white border border-gray-100 shadow-sm rounded flex flex-col p-2">
+                <Link href="#" className="text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 px-3 py-2 rounded">About</Link>
+                <Link href="#" className="text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 px-3 py-2 rounded">Careers</Link>
+                <Link href="#" className="text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 px-3 py-2 rounded">Contact</Link>
+              </div>
+            </div>
+          </div>
+
           <button className="px-5 py-2.5 text-sm font-medium text-vesper-surface bg-vesper-text hover:bg-black transition-colors">
-            Request Access
+            Book a Demo
           </button>
         </div>
       </div>
