@@ -398,3 +398,30 @@ Now in terms of your task, I want you to turn the current problem card section t
 
 ## Response 13
 I will refactor `Chapter2_Problem.tsx` to match the exact structural layout of the reference image while keeping Vesper's brand aesthetic. I'll remove the grid borders, introduce three distinct yet subtle background colors (light aerospace blue, muted sage, and warm sand) for the top sections of the cards, and build out three custom Framer Motion-driven software animations. These animations will visually demonstrate "The Disconnect" (a disconnected requirements UI), "The Overhead" (a cycle of manual email/PDF tasks), and "The Cost" (a stack of delayed milestone cards), bringing the abstract problems to life just like the example.
+
+## Prompt 14
+Okay everythign is great, except I have a couple of changes.
+1. Return to the previous section title, something like: "Traditional aerospace compliance is broken."
+2. I want to fix the animations and have left feedback below.
+I want to completely redesign the three problem cards. Right now they still feel like generic SaaS feature cards with decorative animations. Instead, I want each card to feel like a miniature product demonstration that communicates a real pain point aerospace organizations experience today. The animations should be practical, believable, and grounded in actual compliance workflows. Someone working at a satellite company or launch provider should immediately recognize these situations.
+The cards should tell a sequence of events: Fragmentation → Operational Overhead → Cost & Mission Risk.
+Card One: Mission information is fragmented. (Show Engineering, Legal, and Mission Ops interacting asynchronously).
+Card Two: Manual compliance creates operational overhead. (Show scrolling task list with increasing metrics: Mission Development Time and Compliance Overhead).
+Card Three: One missed deadline delays everything. (Show timeline where FCC Submission delays, pausing everything and increasing Legal Costs).
+
+## Response 14
+I will redesign the three problem card animations to serve as miniature, realistic product stories instead of abstract representations. I will build custom React sub-components for each card to manage stateful sequences using Framer Motion. Card One will depict an asynchronous document request spanning Legal, Mission Ops, and Engineering. Card Two will feature an infinitely generating task list coupled with escalating overhead metrics. Card Three will display a critical path timeline where a missed FCC submission triggers a cascading launch delay and mounting legal costs. I will also revert the section title to "Traditional aerospace compliance is broken." as requested.
+
+## Prompt 15
+Great job here are some notes. 
+1. Reduce the space btewen the cards and the section header it should be the same spacing and look as the exmplae i sent earlier.
+2. The animations look great so I want you to keep the same exact style and conept. However, I have critiques for each animation so i will say them below. 
+Card 1 animation: This animation is too slow and a little laggy. Please maek the animation smoother and remove any parts of the animation that are not necesary to convey the story fulyl and just extend the time fo the animation. If you use a cursor liek object make it a cursor like the image attached thats white or another color that stands out over the background. Please also make the reset to the starting of the animation smoother.
+Card 2 animation: This animation is not animated, but I do like the asthetic. So keep everythign the same jsut mak the concept: need to check this, need to compplete this, need to verify this, need to build this and have these sorts of taks populate one by oneand have the numbers increase for each one. Please also make the rest to the start of the animation smoother.
+Card 3 animation: I love this animation the way it looks but the main issue is that its long. You can remove the day by day countdown and just showcase the warning and the delay and the cost increase everything as it is now. Jus tmake the overall animation shorter and smoother and make the transition to the start of the animation a little smoother.
+
+## Response 15
+I will tighten the spacing between the header and the cards to closely match the reference image. For the animations, I will implement all of your refinements: 
+- **Card 1**: I'll accelerate the pacing, streamline the sequence, use a distinct custom cursor graphic as requested, and ensure a fluid cross-fade reset.
+- **Card 2**: I'll change the behavior to populate urgent tasks sequentially ("Need to check FCC filing", etc.), driving up the Mission Dev Time and Compliance Overhead with each addition, and resetting cleanly once the list fills.
+- **Card 3**: I'll remove the initial countdown phase entirely so the sequence dives straight into the "Missing Antenna Diagram" warning, the subsequent launch delay, and the rapid cost escalation, making it punchier and faster to reset.
