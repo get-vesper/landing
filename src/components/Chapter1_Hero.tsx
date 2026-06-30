@@ -22,12 +22,12 @@ export default function Chapter1_Hero() {
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
             <h1 className="text-5xl md:text-6xl font-display font-medium tracking-tight mb-8 text-vesper-text leading-[1.1]">
-              Bringing order to <br className="hidden md:block" />
-              aerospace complexity.
+              Automating <br className="hidden md:block" />
+              aerospace compliance.
             </h1>
             
             <p className="text-lg text-vesper-text-muted font-normal leading-relaxed mb-12 max-w-md">
-              Vesper is the operational infrastructure layer connecting engineering systems, business operations, and regulatory agencies into one cohesive workflow.
+              Stop managing licensing through spreadsheets, PDFs, and email chains. Vesper automates repetitive operational work so engineering and legal teams spend less time coordinating and more time building missions.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center gap-4">

@@ -12,8 +12,8 @@ export default function Chapter8_Closing() {
         </div>
         
         <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-medium mb-16 text-vesper-text tracking-tight leading-[1.1]">
-          The operating system <br className="hidden md:block" />
-          for aerospace compliance.
+          Ready to automate your <br className="hidden md:block" />
+          compliance workflow?
         </h2>
         
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

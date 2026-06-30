@@ -2,61 +2,65 @@
 
 import { motion } from "framer-motion";
 
+const ecosystem1 = ["Jira", "Linear", "GitHub", "Slack", "Notion", "Asana", "Salesforce", "PLM Systems"];
+const ecosystem2 = ["FCC Databases", "ITU Filings", "NOAA", "FAA", "DoD", "ESA", "NASA", "Space Force"];
+
 export default function Chapter6_Ecosystem() {
   return (
-    <section className="py-32 md:py-48 relative border-t border-vesper-border bg-vesper-base">
-      <div className="max-w-7xl mx-auto px-8 w-full flex flex-col items-center">
+    <section className="py-32 md:py-48 relative border-t border-vesper-border bg-vesper-base overflow-hidden">
+      <div className="max-w-7xl mx-auto px-8 w-full flex flex-col md:flex-row items-center justify-between gap-16">
         
-        <div className="text-xs font-mono tracking-widest text-vesper-accent mb-12 uppercase text-center">
-          05 / The Ecosystem
+        {/* Left Side: Typography */}
+        <div className="w-full md:w-1/2 flex flex-col items-start z-10">
+          <div className="text-xs font-mono tracking-widest text-vesper-accent mb-8 uppercase">
+            04 / The Ecosystem
+          </div>
+          
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-medium mb-8 text-vesper-text tracking-tight leading-[1.1]">
+            Connects to your <br className="hidden lg:block" />
+            ecosystem.
+          </h2>
+          
+          <p className="text-lg text-vesper-text-muted font-normal leading-relaxed max-w-lg">
+            Vesper connects separated engineering, business, and legal teams, ensuring your entire company operates from a single source of truth without leaving their existing tools.
+          </p>
         </div>
-        
-        <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-medium mb-12 text-vesper-text tracking-tight text-center max-w-4xl leading-[1.1]">
-          Infrastructure, not an island.
-        </h2>
-        
-        <p className="text-lg md:text-xl text-vesper-text-muted font-normal leading-relaxed text-center max-w-2xl mx-auto mb-24">
-          Vesper doesn't force your engineering team to leave their tools. It integrates directly with your existing technical and business stack, extracting parameters without adding friction.
-        </p>
 
-        {/* Clean, editorial diagram */}
-        <div className="w-full max-w-5xl border border-vesper-border p-8 md:p-16 flex flex-col md:flex-row justify-between items-center relative bg-vesper-surface">
-          
-          <div className="flex flex-col gap-6 w-full md:w-1/4 mb-12 md:mb-0 relative z-10 bg-vesper-surface">
-            <div className="text-xs font-mono text-vesper-text-muted border-b border-vesper-border pb-3 uppercase tracking-widest">Engineering Stack</div>
-            <div className="text-base text-vesper-text font-medium">Jira / Linear</div>
-            <div className="text-base text-vesper-text font-medium">CAD / PLM</div>
-            <div className="text-base text-vesper-text font-medium">Internal Docs</div>
+        {/* Right Side: Vertical Tickers */}
+        <div className="w-full md:w-1/2 h-[400px] md:h-[600px] relative flex justify-center gap-6 overflow-hidden mask-vertical-fades">
+          {/* Top/Bottom gradient masks to make tickers fade out */}
+          <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-vesper-base to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-vesper-base to-transparent z-10 pointer-events-none" />
+
+          {/* Ticker 1 (Scrolling Up) */}
+          <div className="w-48 relative flex flex-col overflow-hidden">
+            <motion.div
+              className="flex flex-col gap-6 w-full"
+              animate={{ y: ["0%", "-50%"] }}
+              transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+            >
+              {[...ecosystem1, ...ecosystem1].map((item, i) => (
+                <div key={`col1-${i}`} className="h-24 border border-vesper-border bg-vesper-surface flex items-center justify-center p-4">
+                  <span className="font-display font-medium text-vesper-text text-lg tracking-tight">{item}</span>
+                </div>
+              ))}
+            </motion.div>
           </div>
 
-          <div className="p-8 border-[1.5px] border-vesper-text flex items-center justify-center bg-vesper-surface z-10 w-full md:w-1/4 text-center">
-            <span className="font-display font-semibold tracking-tight text-vesper-text text-xl">Vesper</span>
+          {/* Ticker 2 (Scrolling Down) */}
+          <div className="w-48 relative flex flex-col overflow-hidden mt-12">
+            <motion.div
+              className="flex flex-col gap-6 w-full"
+              animate={{ y: ["-50%", "0%"] }}
+              transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+            >
+              {[...ecosystem2, ...ecosystem2].map((item, i) => (
+                <div key={`col2-${i}`} className="h-24 border border-vesper-border bg-vesper-surface flex items-center justify-center p-4">
+                  <span className="font-display font-medium text-vesper-text text-lg tracking-tight text-center">{item}</span>
+                </div>
+              ))}
+            </motion.div>
           </div>
-
-          <div className="flex flex-col gap-6 w-full md:w-1/4 text-left md:text-right mt-12 md:mt-0 relative z-10 bg-vesper-surface">
-            <div className="text-xs font-mono text-vesper-text-muted border-b border-vesper-border pb-3 uppercase tracking-widest">Regulatory Agencies</div>
-            <div className="text-base text-vesper-text font-medium">FCC Databases</div>
-            <div className="text-base text-vesper-text font-medium">ITU Filings</div>
-            <div className="text-base text-vesper-text font-medium">NOAA Submissions</div>
-          </div>
-
-          {/* Connection Lines (Desktop only) */}
-          <div className="absolute top-1/2 left-0 w-full h-px border-t border-dashed border-vesper-border hidden md:block z-0" />
-          
-          <motion.div 
-            className="absolute top-1/2 left-1/4 w-1/4 h-px bg-vesper-accent hidden md:block z-0"
-            initial={{ scaleX: 0, originX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.5, ease: "easeInOut" }}
-          />
-          <motion.div 
-            className="absolute top-1/2 right-1/4 w-1/4 h-px bg-vesper-accent hidden md:block z-0"
-            initial={{ scaleX: 0, originX: 1 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.5, ease: "easeInOut", delay: 0.5 }}
-          />
 
         </div>
 
