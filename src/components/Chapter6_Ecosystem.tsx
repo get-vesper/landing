@@ -7,7 +7,7 @@ const ecosystem2 = ["FCC Databases", "ITU Filings", "NOAA", "FAA", "DoD", "ESA",
 
 export default function Chapter6_Ecosystem() {
   return (
-    <section className="py-32 md:py-48 relative border-t border-vesper-border bg-vesper-base overflow-hidden">
+    <section className="py-32 md:py-48 relative border-t border-gray-200 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-8 w-full flex flex-col md:flex-row items-center justify-between gap-16">
         
         {/* Left Side: Typography */}
@@ -16,12 +16,12 @@ export default function Chapter6_Ecosystem() {
             04 / The Ecosystem
           </div>
           
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-medium mb-8 text-vesper-text tracking-tight leading-[1.1]">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-sans font-medium mb-8 text-black tracking-tight leading-[1.1]">
             Connects to your <br className="hidden lg:block" />
             ecosystem.
           </h2>
           
-          <p className="text-lg text-vesper-text-muted font-normal leading-relaxed max-w-lg">
+          <p className="text-lg text-gray-600 font-normal leading-relaxed max-w-lg">
             Vesper connects separated engineering, business, and legal teams, ensuring your entire company operates from a single source of truth without leaving their existing tools.
           </p>
         </div>
@@ -40,8 +40,8 @@ export default function Chapter6_Ecosystem() {
               transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
             >
               {[...ecosystem1, ...ecosystem1].map((item, i) => (
-                <div key={`col1-${i}`} className="h-24 border border-vesper-border bg-vesper-surface flex items-center justify-center p-4">
-                  <span className="font-display font-medium text-vesper-text text-lg tracking-tight">{item}</span>
+                <div key={`col1-${i}`} className="h-24 border border-gray-200 bg-white flex items-center justify-center p-4">
+                  <span className="font-sans font-medium text-black text-lg tracking-tight">{item}</span>
                 </div>
               ))}
             </motion.div>
@@ -55,8 +55,8 @@ export default function Chapter6_Ecosystem() {
               transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
             >
               {[...ecosystem2, ...ecosystem2].map((item, i) => (
-                <div key={`col2-${i}`} className="h-24 border border-vesper-border bg-vesper-surface flex items-center justify-center p-4">
-                  <span className="font-display font-medium text-vesper-text text-lg tracking-tight text-center">{item}</span>
+                <div key={`col2-${i}`} className="h-24 border border-gray-200 bg-white flex items-center justify-center p-4">
+                  <span className="font-sans font-medium text-black text-lg tracking-tight text-center">{item}</span>
                 </div>
               ))}
             </motion.div>

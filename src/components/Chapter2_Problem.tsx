@@ -210,13 +210,13 @@ function OverheadAnimation() {
         <div className="w-32 flex flex-col gap-6 pt-6">
           <motion.div layout>
             <div className="text-[10px] text-gray-500 mb-1">Mission Dev Time</div>
-            <div className="text-xl font-display text-gray-900">
+            <div className="text-xl font-sans text-gray-900">
               {phase >= 1 ? `>180` : devTime} <span className="text-xs text-gray-400">Days</span>
             </div>
           </motion.div>
           <motion.div layout>
             <div className={`text-[10px] font-medium mb-1 transition-colors ${phase >= 1 ? 'text-red-600' : 'text-orange-600'}`}>Compliance Overhead</div>
-            <div className={`text-xl font-display transition-colors ${phase >= 1 ? 'text-red-600' : 'text-orange-600'}`}>
+            <div className={`text-xl font-sans transition-colors ${phase >= 1 ? 'text-red-600' : 'text-orange-600'}`}>
               {phase >= 1 ? `>450` : overhead} <span className="text-xs text-gray-400">Hours</span>
             </div>
           </motion.div>
@@ -388,8 +388,8 @@ export default function Chapter2_Problem() {
   ];
 
   return (
-    <section className="py-20 md:py-24 relative bg-vesper-base border-t border-vesper-border/50">
-      <div className="max-w-7xl mx-auto px-8 w-full flex flex-col lg:flex-row gap-16 lg:items-center">
+    <section className="relative w-full bg-white border-t border-gray-200">
+      <div className="max-w-7xl mx-auto px-8 w-full py-20 md:py-24 border-x border-gray-200 flex flex-col lg:flex-row gap-16 lg:items-center">
         
         {/* LEFT: Dynamic Animation Container */}
         <div className="w-full lg:w-1/2">
@@ -415,10 +415,10 @@ export default function Chapter2_Problem() {
         {/* RIGHT: Text & Accordion */}
         <div className="w-full lg:w-1/2 flex flex-col">
           <div className="mb-12">
-            <div className="text-xs font-mono tracking-widest text-vesper-text-muted uppercase mb-4 md:mb-6">
+            <div className="text-xs font-mono tracking-widest text-teal-600 uppercase mb-4 md:mb-6">
               01 / The Problem
             </div>
-            <h2 className="text-4xl md:text-5xl font-display font-medium text-vesper-text tracking-tight leading-[1.1]">
+            <h2 className="text-4xl md:text-5xl font-serif text-gray-900 tracking-tight leading-[1.1]">
               Traditional aerospace compliance is broken.
             </h2>
           </div>
@@ -438,7 +438,7 @@ export default function Chapter2_Problem() {
                   }}
                 >
                   <div className="py-6 flex items-center justify-between">
-                    <h3 className={`text-lg font-display transition-colors duration-300 ${isActive ? 'text-vesper-text font-medium' : 'text-gray-400 group-hover:text-gray-600'}`}>
+                    <h3 className={`text-lg font-sans transition-colors duration-300 ${isActive ? 'text-gray-900 font-medium' : 'text-gray-400 group-hover:text-gray-600'}`}>
                       {problem.title}
                     </h3>
                     <div className="text-gray-400">
@@ -469,10 +469,10 @@ export default function Chapter2_Problem() {
                             initial={{ width: "0%" }}
                             animate={{ width: "100%" }}
                             transition={{ duration: 12, ease: "linear" }}
-                            className="absolute top-0 left-0 h-full bg-vesper-text"
+                            className="absolute top-0 left-0 h-full bg-gray-900"
                           />
                         </div>
-                        <p className="pb-8 text-sm text-vesper-text-muted leading-relaxed pr-8">
+                        <p className="pb-8 text-sm text-gray-600 leading-relaxed pr-8">
                           {problem.description}
                         </p>
                       </motion.div>
